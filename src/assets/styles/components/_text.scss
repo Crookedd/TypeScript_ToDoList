@@ -1,0 +1,31 @@
+@use "./variables" as vars;
+
+.text_container {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.input {
+  height: 32px;
+  font-size: 10px;
+  color: vars.$text_color; 
+  background-color: vars.$task_background;
+  border: 1px solid vars.$primary_color;
+  border-radius: 4px;
+  padding: 0 10px;
+
+  &.error {
+    border-color: rgb(255, 179, 0);
+  }
+}
+
+.textarea {
+  font-size: 14px;
+  color: vars.$text_color; 
+  background-color: vars.$task_background;
+  border: 1px solid vars.$primary_color;
+  border-radius: 4px;
+  padding: 0 10px;
+  resize: none;
+}

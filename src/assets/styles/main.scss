@@ -1,0 +1,31 @@
+@use "./components/variables" as vars; 
+@use "./components/modals" as modals;  
+@use "./components/layout" as layout;    
+@use "./components/buttons" as buttons; 
+@use "./components/text" as text;       
+
+@font-face {
+  font-family: "Roboto";
+  src: url(../fonts/Roboto-Regular.ttf);
+}
+
+body {
+  font-family: "Roboto", sans-serif;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+  height: 100vh;
+  background-color: vars.$background_color;
+}
+
+@media (max-width: 600px) {
+  .container {
+    padding: 10px;
+  }
+
+  .header {
+    flex-direction: row;
+    align-items: flex-start;
+  }
+}

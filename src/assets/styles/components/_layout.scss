@@ -1,0 +1,83 @@
+@use "./variables" as vars;
+@use "sass:color";
+
+.container {
+  width: 600px;
+  height: 100%;
+  padding: 20px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: nowrap;
+}
+
+.task_section {
+  margin-top: 40px;
+}
+
+.top_line {
+  width: 64px;
+  border: 2px solid vars.$primary_color;
+}
+
+.no_tasks {
+  color: vars.$text_color; // Исправлено: убрано тире
+  font-size: 23px;
+  margin: 10px 0;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: column;
+}
+
+.task {
+  position: relative;
+  background-color: vars.$task_background;
+  border: 1px solid vars.$primary_color;
+  height: 44px;
+  padding: 10px;
+  margin: 10px 0;
+  border-radius: 5px;
+  color: vars.$font_color; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: all 0.3s ease;
+
+  &.expanded {
+    margin-top: 10px;
+    margin-bottom: 50px;
+    background-color: color.adjust(vars.$task_background, $lightness: 5%); 
+  }
+
+  &:hover {
+    background-color: color.adjust(vars.$task_background, $lightness: 10%);
+  }
+}
+
+.task .text-container {
+  width: 90%;
+}
+
+.task .title {
+  font-size: 22px;
+  margin: 0;
+}
+
+.task .about {
+  font-size: 14px;
+  margin: 0;
+}
+
+.task .about,
+.task .title {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}

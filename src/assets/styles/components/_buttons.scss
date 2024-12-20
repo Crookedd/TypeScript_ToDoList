@@ -1,0 +1,119 @@
+@use "./variables" as vars;
+@use "sass:color";
+
+.add_button {
+  background-color: vars.$background_color;
+  color: vars.$primary_color;
+  font-size: 40px;
+  width: 70px;
+  height: 70px;
+  border-color: vars.$primary_color;
+  border-radius: 4px;
+  padding: 8px 12px;
+  cursor: pointer;
+}
+
+.delete_button {
+  width: 32px;
+  height: 32px;
+  font-size: 25px;
+  background-color: vars.$background_color;
+  border-color: vars.$primary_color;
+  border-radius: 4px;
+  color: vars.$primary_color; 
+  cursor: pointer;
+}
+
+.confirm_button,
+.cancel_button,
+.save_button {
+  width: 64px;
+  height: 30px;
+  background-color: vars.$background_color;
+  border-color: vars.$primary_color;
+  border-radius: 4px;
+  padding: 5px;
+  margin: 0 10px;
+  color: #d9d9d9;
+  cursor: pointer;
+}
+
+button:hover {
+  background-color: vars.$primary_color;
+  color: vars.$text_color; 
+  transition: all 0.3s ease;
+}
+
+.button_container {
+  position: absolute;
+  right: 0;
+  bottom: -40px;
+  display: flex;
+  justify-content: flex-end;
+  margin: 2px;
+  gap: 10px;
+  transition: all 0.3s ease;
+}
+
+.mb-12 {
+  margin-bottom: 12px;
+}
+
+.hidden {
+  display: none;
+}
+
+.task.expanded {
+  margin-top: 10px;
+  margin-bottom: 50px;
+  transition: margin-top 0.3s ease;
+}
+
+.action_button {
+  width: 36px;
+  height: 36px;
+  background-color: vars.$task_background;
+  border: 1px solid vars.$primary_color;
+  color: white;
+  cursor: pointer;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 5px 10px;
+  border-radius: 4px;
+  font-size: 16px;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: color.adjust(vars.$primary_color, $lightness: 10%);
+  }
+}
+
+.share_buttons {
+  display: flex;
+  justify-content: space-around;
+  margin: 20px 0;
+}
+
+.share_button {
+  background-color: vars.$task_background;
+  border-radius: 50%;
+  border: none;
+  padding: 15px;
+  cursor: pointer;
+  width: 50px;
+  height: 50px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: color.adjust(vars.$task_background, $lightness: 10%);
+  }
+}
+
+.share_button img {
+  max-width: 100%;
+  max-height: 100%;
+}

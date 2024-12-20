@@ -6,8 +6,8 @@ import {
   Draggable,
   DroppableProvided,
   DraggableProvided,
-  DropResult,
 } from "react-beautiful-dnd";
+
 import { useDispatch } from "react-redux";
 import { reorderTasks } from "../store/tasksSlice";
 import { Task as TaskType } from "../interface/types";
@@ -17,20 +17,17 @@ interface TaskListProps {
   deleteTask: (id: string) => void;
 }
 
+
+
 const TaskList: React.FC<TaskListProps> = ({ tasks, deleteTask }) => {
   const dispatch = useDispatch();
 
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
-
-    if (!destination || source.index === destination.index) {
-      return; // Если перемещение не изменило порядок или было отменено
-    }
-
+  const onDragEnd = (result: any) => {
+    if (!result.destination) return;
     dispatch(
       reorderTasks({
-        sourceIndex: source.index,
-        destinationIndex: destination.index,
+        sourceIndex: result.source.index,
+        destinationIndex: result.destination.index,
       })
     );
   };
@@ -38,7 +35,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, deleteTask }) => {
   return (
     <DragDropContext onDragEnd={onDragEnd}>
       <Droppable droppableId="droppable">
-        {(provided: DroppableProvided) => (
+        {(provided: import("react-beautiful-dnd").DroppableProvided) => (
           <div
             className="task_section"
             {...provided.droppableProps}
@@ -49,8 +46,8 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, deleteTask }) => {
               <p className="no_tasks">No tasks</p>
             ) : (
               tasks.map((task, index) => (
-                <Draggable key={task.id} draggableId={task.id} index={index}>
-                  {(provided: DraggableProvided) => (
+                <Draggable  key={task.id} draggableId={task.id} index={index}>
+                  {(provided: import("react-beautiful-dnd").DraggableProvided) => (
                     <div
                       ref={provided.innerRef}
                       {...provided.draggableProps}
@@ -62,7 +59,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, deleteTask }) => {
                 </Draggable>
               ))
             )}
-            {provided.placeholder}
+            {provided.placeholder as React.ReactNode}
             {tasks.length === 0 && <hr className="top_line" />}
           </div>
         )}
