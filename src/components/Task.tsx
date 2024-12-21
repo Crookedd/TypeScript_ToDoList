@@ -1,36 +1,66 @@
 import React, { useState } from "react";
-//import { useDispatch } from "react-redux";
+import { useDrag, useDrop } from "react-dnd";
+import { Task as TaskType } from "../interface/types";
 import ButtonContainer from "./ButtonContainer";
 import EditTaskModal from "./modals/EditTaskModal";
 import ShareModal from "./modals/ShareModal";
-//import { deleteTask, updateTask } from "../store/tasksSlice";
-import { Task as TaskType } from "../interface/types";
+import { useDispatch } from "react-redux";
+import { updateTask } from "../store/tasksSlice";
 
 interface TaskProps {
   task: TaskType;
   onDelete: (id: string) => void;
   onUpdate: (updatedTask: TaskType) => void;
+  index: number;
+  moveTask: (sourceIndex: number, destinationIndex: number) => void;
 }
 
-const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate }) => {
-  //const dispatch = useDispatch();
+const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate, index, moveTask }) => {
+  const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
 
-  const handleMouseEnter = () => setIsHovered(true);
-  const handleMouseLeave = () => setIsHovered(false);
+  // Перетаскивание задачи
+  const [{ isDragging }, dragRef] = useDrag({
+    type: "TASK",
+    item: { id: task.id, index },
+    collect: (monitor) => ({
+      isDragging: monitor.isDragging(),
+    }),
+  });
 
-  const handleDelete = () => onDelete(task.id);
+  const [, dropRef] = useDrop({
+    accept: "TASK",
+    hover: (item: { id: string; index: number }) => {
+      if (item.index !== index) {
+        moveTask(item.index, index);
+        item.index = index;
+      }
+    },
+  });
+
+  const handleMouseEnter = () => {
+    setIsHovered(true);
+  };
+
+  const handleMouseLeave = () => {
+    setIsHovered(false);
+  };
+
+  const handleDelete = () => {
+    onDelete(task.id);
+  };
 
   const handleEdit = (updatedTask: TaskType) => {
-    onUpdate(updatedTask); 
+    dispatch(updateTask(updatedTask));
     setEditModalOpen(false);
   };
 
   return (
     <div
-      className={`task ${isHovered ? "expanded" : ""}`}
+      ref={(node) => dragRef(dropRef(node))}
+      className={`task ${isHovered ? "expanded" : ""} ${isDragging ? "dragging" : ""}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -52,7 +82,7 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate }) => {
       {isEditModalOpen && (
         <EditTaskModal
           task={task}
-          onSave={handleEdit} 
+          onSave={handleEdit}
           onCancel={() => setEditModalOpen(false)}
         />
       )}
@@ -64,5 +94,4 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate }) => {
 };
 
 export default Task;
-
 

@@ -1,6 +1,4 @@
 import React, { useState } from "react";
-//import { useDispatch } from "react-redux";
-//import { addTask } from "../store/tasksSlice";
 import ErrorModal from "./modals/ErrorModal";
 import { Task } from "../interface/types";
 
@@ -65,5 +63,6 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
 };
 
 export default TaskForm;
+
 
 

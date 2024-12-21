@@ -1,4 +1,3 @@
-// App.tsx
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import TaskForm from "./components/TaskForm";
@@ -26,13 +25,13 @@ const App: React.FC = () => {
 
   const confirmDeleteTask = () => {
     if (taskToDelete) {
-      dispatch(deleteTask(taskToDelete));
+      dispatch(deleteTask(taskToDelete)); // Удаление задачи
     }
-    setModalOpen(false);
+    setModalOpen(false); // Закрыть модальное окно
   };
 
   const cancelDeleteTask = () => {
-    setModalOpen(false);
+    setModalOpen(false); // Просто закрыть модальное окно без изменений
   };
 
   const handleUpdateTask = (updatedTask: Task) => {
@@ -49,8 +48,8 @@ const App: React.FC = () => {
       />
       {isModalOpen && (
         <ConfirmationModal
-          onConfirm={confirmDeleteTask}
-          onCancel={cancelDeleteTask}
+          onConfirm={confirmDeleteTask} // Передаем функцию для удаления
+          onCancel={cancelDeleteTask}   // Передаем функцию для отмены
         />
       )}
     </div>
@@ -58,4 +57,5 @@ const App: React.FC = () => {
 };
 
 export default App;
+
 
