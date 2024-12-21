@@ -8,14 +8,14 @@ interface TaskListProps {
   tasks: TaskType[];
   deleteTask: (id: string) => void;
   updateTask: (updatedTask: TaskType) => void;
-  maxPinnedTasks: number; 
+  maxPinnedTasks: number;
 }
 
 const TaskList: React.FC<TaskListProps> = ({
   tasks,
   deleteTask,
   updateTask,
-  maxPinnedTasks
+  maxPinnedTasks,
 }) => {
   const dispatch = useDispatch();
 
@@ -43,14 +43,16 @@ const TaskList: React.FC<TaskListProps> = ({
                   onUpdate={updateTask}
                   index={index}
                   moveTask={moveTask}
-                  pinnedTasks={pinnedTasks} 
-                  maxPinnedTasks={maxPinnedTasks} 
+                  pinnedTasks={pinnedTasks}
+                  maxPinnedTasks={maxPinnedTasks}
                 />
               ))}
             </>
           )}
 
-          {pinnedTasks.length > 0 && unpinnedTasks.length > 0 && <hr className="top_line" />}
+          {pinnedTasks.length > 0 && unpinnedTasks.length > 0 && (
+            <hr className="top_line" />
+          )}
 
           {unpinnedTasks.length > 0 && (
             <>
@@ -62,8 +64,8 @@ const TaskList: React.FC<TaskListProps> = ({
                   onUpdate={updateTask}
                   index={index}
                   moveTask={moveTask}
-                  pinnedTasks={pinnedTasks} 
-                  maxPinnedTasks={maxPinnedTasks} 
+                  pinnedTasks={pinnedTasks}
+                  maxPinnedTasks={maxPinnedTasks}
                 />
               ))}
             </>
@@ -76,9 +78,3 @@ const TaskList: React.FC<TaskListProps> = ({
 };
 
 export default TaskList;
-
-
-
-
-
-

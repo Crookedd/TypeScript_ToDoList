@@ -25,7 +25,7 @@ const App: React.FC = () => {
 
   const confirmDeleteTask = () => {
     if (taskToDelete) {
-      dispatch(deleteTask(taskToDelete)); 
+      dispatch(deleteTask(taskToDelete));
     }
     setModalOpen(false);
   };
@@ -51,8 +51,8 @@ const App: React.FC = () => {
       />
       {isModalOpen && (
         <ConfirmationModal
-          onConfirm={confirmDeleteTask} 
-          onCancel={cancelDeleteTask} 
+          onConfirm={confirmDeleteTask}
+          onCancel={cancelDeleteTask}
         />
       )}
     </div>
@@ -60,5 +60,3 @@ const App: React.FC = () => {
 };
 
 export default App;
-
-

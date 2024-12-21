@@ -18,12 +18,19 @@ interface TaskProps {
   maxPinnedTasks: number;
 }
 
-const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTasks, maxPinnedTasks }) => {
+const Task: React.FC<TaskProps> = ({
+  task,
+  onDelete,
+  index,
+  moveTask,
+  pinnedTasks,
+  maxPinnedTasks,
+}) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
-  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); 
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false);
 
   const [{ isDragging }, dragRef] = useDrag({
     type: "TASK",
@@ -74,12 +81,12 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTask
     } else if (pinnedTasks.length < maxPinnedTasks) {
       dispatch(updateTask({ ...task, pinned: true }));
     } else {
-      setIsErrorModalOpen(true); 
+      setIsErrorModalOpen(true);
     }
   };
 
   const closeErrorModal = () => {
-    setIsErrorModalOpen(false); 
+    setIsErrorModalOpen(false);
   };
 
   return (
@@ -97,7 +104,11 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTask
         &times;
       </button>
       <button className="pin_button" onClick={handlePinToggle}>
-        {task.pinned ? "Unpin" : pinnedTasks.length < maxPinnedTasks ? "Pin" : "Pin"}
+        {task.pinned
+          ? "Unpin"
+          : pinnedTasks.length < maxPinnedTasks
+            ? "Pin"
+            : "Pin"}
       </button>
       {isHovered && (
         <ButtonContainer
@@ -128,7 +139,3 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTask
 };
 
 export default Task;
-
-
-
-

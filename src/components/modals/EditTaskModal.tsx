@@ -8,7 +8,11 @@ interface EditTaskModalProps {
   onCancel: () => void;
 }
 
-const EditTaskModal: React.FC<EditTaskModalProps> = ({ task, onSave, onCancel }) => {
+const EditTaskModal: React.FC<EditTaskModalProps> = ({
+  task,
+  onSave,
+  onCancel,
+}) => {
   const [title, setTitle] = useState(task.title);
   const [description, setDescription] = useState(task.description);
   const [showErrorModal, setShowErrorModal] = useState(false);

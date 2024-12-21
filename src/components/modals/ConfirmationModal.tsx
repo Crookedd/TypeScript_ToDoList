@@ -5,7 +5,10 @@ type ConfirmationModalProps = {
   onCancel: () => void;
 };
 
-const ConfirmationModal: React.FC<ConfirmationModalProps> = ({ onConfirm, onCancel }) => {
+const ConfirmationModal: React.FC<ConfirmationModalProps> = ({
+  onConfirm,
+  onCancel,
+}) => {
   return (
     <div className="modal">
       <div className="modal_content">

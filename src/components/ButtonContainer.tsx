@@ -5,7 +5,7 @@ import InfoImg from "/src/assets/images/inf.svg";
 import { Task } from "../interface/types";
 
 interface ButtonContainerProps {
-  task: Task; 
+  task: Task;
   isVisible: boolean;
   onEdit: () => void;
   onShare: () => void;
@@ -14,7 +14,7 @@ interface ButtonContainerProps {
 const ButtonContainer: React.FC<ButtonContainerProps> = ({
   isVisible,
   onEdit,
-  onShare
+  onShare,
 }) => {
   return (
     <div className="button_container">
@@ -36,6 +36,3 @@ const ButtonContainer: React.FC<ButtonContainerProps> = ({
 };
 
 export default ButtonContainer;
-
-
-

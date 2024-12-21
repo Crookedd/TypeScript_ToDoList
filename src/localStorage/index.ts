@@ -7,5 +7,3 @@ export const loadTasks = (): Task[] => {
 export const saveTasks = (tasks: Task[]): void => {
   localStorage.setItem("tasks", JSON.stringify(tasks));
 };
-
-

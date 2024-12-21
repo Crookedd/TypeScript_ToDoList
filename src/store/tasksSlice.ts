@@ -4,7 +4,7 @@ import { loadTasks, saveTasks } from "../localStorage";
 
 interface TasksState {
   tasks: Task[];
-  pinnedTasks: string[]; 
+  pinnedTasks: string[];
 }
 
 const initialState: TasksState = {
@@ -22,17 +22,24 @@ const tasksSlice = createSlice({
     },
     deleteTask: (state, action: PayloadAction<string>) => {
       state.tasks = state.tasks.filter((task) => task.id !== action.payload);
-      state.pinnedTasks = state.pinnedTasks.filter((id) => id !== action.payload);
+      state.pinnedTasks = state.pinnedTasks.filter(
+        (id) => id !== action.payload
+      );
       saveTasks(state.tasks);
     },
     updateTask: (state, action: PayloadAction<Task>) => {
-      const index = state.tasks.findIndex((task) => task.id === action.payload.id);
+      const index = state.tasks.findIndex(
+        (task) => task.id === action.payload.id
+      );
       if (index !== -1) {
         state.tasks[index] = action.payload;
         saveTasks(state.tasks);
       }
     },
-    reorderTasks: (state, action: PayloadAction<{ sourceIndex: number; destinationIndex: number }>) => {
+    reorderTasks: (
+      state,
+      action: PayloadAction<{ sourceIndex: number; destinationIndex: number }>
+    ) => {
       const { sourceIndex, destinationIndex } = action.payload;
       const [movedTask] = state.tasks.splice(sourceIndex, 1);
       state.tasks.splice(destinationIndex, 0, movedTask);
@@ -43,17 +50,15 @@ const tasksSlice = createSlice({
       const isPinned = state.pinnedTasks.includes(taskId);
 
       if (isPinned) {
-        state.pinnedTasks = state.pinnedTasks.filter((id) => id !== taskId); 
+        state.pinnedTasks = state.pinnedTasks.filter((id) => id !== taskId);
       } else if (state.pinnedTasks.length < 3) {
-        state.pinnedTasks.push(taskId); 
+        state.pinnedTasks.push(taskId);
       }
       saveTasks(state.tasks);
     },
   },
 });
 
-export const { addTask, deleteTask, updateTask, reorderTasks, togglePinTask } = tasksSlice.actions;
+export const { addTask, deleteTask, updateTask, reorderTasks, togglePinTask } =
+  tasksSlice.actions;
 export default tasksSlice.reducer;
-
-
-

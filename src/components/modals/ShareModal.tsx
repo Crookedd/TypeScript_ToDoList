@@ -92,4 +92,3 @@ const ShareModal: React.FC<ShareModalProps> = ({ task, onClose }) => {
 };
 
 export default ShareModal;
-
