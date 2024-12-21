@@ -22,7 +22,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
       id: Date.now().toString(),
       title,
       description,
-      pinned: false, // Устанавливаем pinned в false по умолчанию
+      pinned: false,
     };
 
     addTask(newTask);

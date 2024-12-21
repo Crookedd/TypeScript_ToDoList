@@ -6,6 +6,7 @@ import EditTaskModal from "./modals/EditTaskModal";
 import ShareModal from "./modals/ShareModal";
 import { useDispatch } from "react-redux";
 import { updateTask } from "../store/tasksSlice";
+import ErrorModal from "./modals/ErrorModal";
 
 interface TaskProps {
   task: TaskType;
@@ -13,14 +14,16 @@ interface TaskProps {
   onUpdate: (updatedTask: TaskType) => void;
   index: number;
   moveTask: (sourceIndex: number, destinationIndex: number) => void;
-  pinnedTasks: TaskType[]; 
+  pinnedTasks: TaskType[];
+  maxPinnedTasks: number;
 }
 
-const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTasks }) => {
+const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTasks, maxPinnedTasks }) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
+  const [isErrorModalOpen, setIsErrorModalOpen] = useState(false); 
 
   const [{ isDragging }, dragRef] = useDrag({
     type: "TASK",
@@ -66,7 +69,17 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTask
   };
 
   const handlePinToggle = () => {
-    dispatch(updateTask({ ...task, pinned: !task.pinned })); 
+    if (task.pinned) {
+      dispatch(updateTask({ ...task, pinned: false }));
+    } else if (pinnedTasks.length < maxPinnedTasks) {
+      dispatch(updateTask({ ...task, pinned: true }));
+    } else {
+      setIsErrorModalOpen(true); 
+    }
+  };
+
+  const closeErrorModal = () => {
+    setIsErrorModalOpen(false); 
   };
 
   return (
@@ -84,7 +97,7 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTask
         &times;
       </button>
       <button className="pin_button" onClick={handlePinToggle}>
-        {task.pinned ? "Unpin" : "Pin"}
+        {task.pinned ? "Unpin" : pinnedTasks.length < maxPinnedTasks ? "Pin" : "Pin"}
       </button>
       {isHovered && (
         <ButtonContainer
@@ -104,11 +117,18 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTask
       {isShareModalOpen && (
         <ShareModal task={task} onClose={() => setShareModalOpen(false)} />
       )}
+      {isErrorModalOpen && (
+        <ErrorModal
+          message="Вы можете закрепить только 3 задачи."
+          onConfirm={closeErrorModal}
+        />
+      )}
     </div>
   );
 };
 
 export default Task;
+
 
 
 

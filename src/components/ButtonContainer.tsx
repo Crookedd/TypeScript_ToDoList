@@ -5,7 +5,7 @@ import InfoImg from "/src/assets/images/inf.svg";
 import { Task } from "../interface/types";
 
 interface ButtonContainerProps {
-  task: Task; // Заменяем taskId на task
+  task: Task; 
   isVisible: boolean;
   onEdit: () => void;
   onShare: () => void;

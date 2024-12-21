@@ -25,18 +25,20 @@ const App: React.FC = () => {
 
   const confirmDeleteTask = () => {
     if (taskToDelete) {
-      dispatch(deleteTask(taskToDelete)); // Удаление задачи
+      dispatch(deleteTask(taskToDelete)); 
     }
-    setModalOpen(false); // Закрыть модальное окно
+    setModalOpen(false);
   };
 
   const cancelDeleteTask = () => {
-    setModalOpen(false); // Просто закрыть модальное окно без изменений
+    setModalOpen(false);
   };
 
   const handleUpdateTask = (updatedTask: Task) => {
     dispatch(updateTask(updatedTask));
   };
+
+  const maxPinnedTasks = 3;
 
   return (
     <div className="container">
@@ -45,11 +47,12 @@ const App: React.FC = () => {
         tasks={tasks}
         deleteTask={handleDeleteTask}
         updateTask={handleUpdateTask}
+        maxPinnedTasks={maxPinnedTasks}
       />
       {isModalOpen && (
         <ConfirmationModal
-          onConfirm={confirmDeleteTask} // Передаем функцию для удаления
-          onCancel={cancelDeleteTask}   // Передаем функцию для отмены
+          onConfirm={confirmDeleteTask} 
+          onCancel={cancelDeleteTask} 
         />
       )}
     </div>
