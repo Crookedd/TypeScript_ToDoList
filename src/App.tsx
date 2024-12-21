@@ -1,76 +1,61 @@
-import React from "react";
-import Task from "./Task";
-import {
-  DragDropContext,
-  Droppable,
-  Draggable,
-  DroppableProvided,
-  DraggableProvided,
-  DropResult,
-} from "react-beautiful-dnd";
-import { useDispatch } from "react-redux";
-import { reorderTasks } from "../store/tasksSlice";
-import { Task as TaskType } from "../interface/types";
+// App.tsx
+import React, { useState } from "react";
+import { useDispatch, useSelector } from "react-redux";
+import TaskForm from "./components/TaskForm";
+import TaskList from "./components/TaskList";
+import ConfirmationModal from "./components/modals/ConfirmationModal";
+import { addTask, deleteTask, updateTask } from "./store/tasksSlice";
+import { RootState, Task } from "./interface/types";
+import "./assets/styles/main.scss";
 
-interface TaskListProps {
-  tasks: TaskType[];
-  deleteTask: (id: string) => void;
-}
-
-const TaskList: React.FC<TaskListProps> = ({ tasks, deleteTask }) => {
+const App: React.FC = () => {
   const dispatch = useDispatch();
+  const tasks = useSelector((state: RootState) => state.tasks.tasks);
 
-  const onDragEnd = (result: DropResult) => {
-    const { source, destination } = result;
+  const [isModalOpen, setModalOpen] = useState(false);
+  const [taskToDelete, setTaskToDelete] = useState<string | null>(null);
 
-    if (!destination || source.index === destination.index) {
-      return; // Если перемещение не изменило порядок или было отменено
+  const handleAddTask = (task: Task) => {
+    dispatch(addTask(task));
+  };
+
+  const handleDeleteTask = (id: string) => {
+    setTaskToDelete(id);
+    setModalOpen(true);
+  };
+
+  const confirmDeleteTask = () => {
+    if (taskToDelete) {
+      dispatch(deleteTask(taskToDelete));
     }
+    setModalOpen(false);
+  };
 
-    dispatch(
-      reorderTasks({
-        sourceIndex: source.index,
-        destinationIndex: destination.index,
-      })
-    );
+  const cancelDeleteTask = () => {
+    setModalOpen(false);
+  };
+
+  const handleUpdateTask = (updatedTask: Task) => {
+    dispatch(updateTask(updatedTask));
   };
 
   return (
-    <DragDropContext onDragEnd={onDragEnd}>
-      <Droppable droppableId="droppable">
-        {(provided: DroppableProvided) => (
-          <div
-            className="task_section"
-            {...provided.droppableProps}
-            ref={provided.innerRef}
-          >
-            {tasks.length === 0 && <hr className="top_line" />}
-            {tasks.length === 0 ? (
-              <p className="no_tasks">No tasks</p>
-            ) : (
-              tasks.map((task, index) => (
-                <Draggable key={task.id} draggableId={task.id} index={index}>
-                  {(provided: DraggableProvided) => (
-                    <div
-                      ref={provided.innerRef}
-                      {...provided.draggableProps}
-                      {...provided.dragHandleProps}
-                    >
-                      <Task task={task} onDelete={deleteTask} />
-                    </div>
-                  )}
-                </Draggable>
-              ))
-            )}
-            {provided.placeholder}
-            {tasks.length === 0 && <hr className="top_line" />}
-          </div>
-        )}
-      </Droppable>
-    </DragDropContext>
+    <div className="container">
+      <TaskForm addTask={handleAddTask} />
+      <TaskList
+        tasks={tasks}
+        deleteTask={handleDeleteTask}
+        updateTask={handleUpdateTask}
+      />
+      {isModalOpen && (
+        <ConfirmationModal
+          onConfirm={confirmDeleteTask}
+          onCancel={cancelDeleteTask}
+        />
+      )}
+    </div>
   );
 };
 
-export default TaskList;
-
+export default App;
 

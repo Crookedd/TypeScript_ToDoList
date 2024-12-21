@@ -1,11 +1,14 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
-import { addTask } from "../store/tasksSlice";
+//import { useDispatch } from "react-redux";
+//import { addTask } from "../store/tasksSlice";
 import ErrorModal from "./modals/ErrorModal";
 import { Task } from "../interface/types";
 
-const TaskForm: React.FC = () => {
-  const dispatch = useDispatch();
+interface TaskFormProps {
+  addTask: (task: Task) => void;
+}
+
+const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
   const [title, setTitle] = useState<string>("");
   const [description, setDescription] = useState<string>("");
   const [showErrorModal, setShowErrorModal] = useState<boolean>(false);
@@ -23,7 +26,7 @@ const TaskForm: React.FC = () => {
       description,
     };
 
-    dispatch(addTask(newTask));
+    addTask(newTask); 
     setTitle("");
     setDescription("");
   };
@@ -62,4 +65,5 @@ const TaskForm: React.FC = () => {
 };
 
 export default TaskForm;
+
 

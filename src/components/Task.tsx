@@ -1,18 +1,19 @@
 import React, { useState } from "react";
-import { useDispatch } from "react-redux";
+//import { useDispatch } from "react-redux";
 import ButtonContainer from "./ButtonContainer";
 import EditTaskModal from "./modals/EditTaskModal";
 import ShareModal from "./modals/ShareModal";
-import { deleteTask, updateTask } from "../store/tasksSlice";
+//import { deleteTask, updateTask } from "../store/tasksSlice";
 import { Task as TaskType } from "../interface/types";
 
 interface TaskProps {
   task: TaskType;
   onDelete: (id: string) => void;
+  onUpdate: (updatedTask: TaskType) => void;
 }
 
-const Task: React.FC<TaskProps> = ({ task, onDelete }) => {
-  const dispatch = useDispatch();
+const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate }) => {
+  //const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
@@ -23,7 +24,7 @@ const Task: React.FC<TaskProps> = ({ task, onDelete }) => {
   const handleDelete = () => onDelete(task.id);
 
   const handleEdit = (updatedTask: TaskType) => {
-    dispatch(updateTask(updatedTask));
+    onUpdate(updatedTask); 
     setEditModalOpen(false);
   };
 
@@ -51,7 +52,7 @@ const Task: React.FC<TaskProps> = ({ task, onDelete }) => {
       {isEditModalOpen && (
         <EditTaskModal
           task={task}
-          onSave={handleEdit}
+          onSave={handleEdit} 
           onCancel={() => setEditModalOpen(false)}
         />
       )}
@@ -63,4 +64,5 @@ const Task: React.FC<TaskProps> = ({ task, onDelete }) => {
 };
 
 export default Task;
+
 
