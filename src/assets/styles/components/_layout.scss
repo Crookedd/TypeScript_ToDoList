@@ -81,3 +81,22 @@
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.task.pinned {
+  border: 2px solid #ff8303;
+  background-color: #383833;
+}
+
+.pin_button {
+  background-color: vars.$background_color;
+  border-color: vars.$primary_color;
+  color: vars.$primary_color;
+  padding: 5px 10px;
+  cursor: pointer;
+}
+
+.pin_button:hover {
+  background-color: vars.$primary_color;
+  color: white;
+}
+

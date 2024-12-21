@@ -12,7 +12,6 @@ interface ButtonContainerProps {
 }
 
 const ButtonContainer: React.FC<ButtonContainerProps> = ({
-  task,
   isVisible,
   onEdit,
   onShare

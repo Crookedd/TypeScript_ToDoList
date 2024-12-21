@@ -1,6 +1,5 @@
 import React from "react";
 import { useDispatch } from "react-redux";
-import { useDrag, useDrop } from "react-dnd";
 import { reorderTasks } from "../store/tasksSlice";
 import Task from "./Task";
 import { Task as TaskType } from "../interface/types";
@@ -18,22 +17,48 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, deleteTask, updateTask }) =>
     dispatch(reorderTasks({ sourceIndex, destinationIndex }));
   };
 
+  const pinnedTasks = tasks.filter((task) => task.pinned); 
+  const unpinnedTasks = tasks.filter((task) => !task.pinned); 
+
   return (
     <div className="task_section">
       {tasks.length === 0 && <hr className="top_line" />}
       {tasks.length === 0 ? (
         <p className="no_tasks">No tasks</p>
       ) : (
-        tasks.map((task, index) => (
-          <Task
-            key={task.id}
-            task={task}
-            onDelete={deleteTask}
-            onUpdate={updateTask}
-            index={index}
-            moveTask={moveTask}
-          />
-        ))
+        <>
+          {pinnedTasks.length > 0 && (
+            <>
+              {pinnedTasks.map((task, index) => (
+                <Task
+                  key={task.id}
+                  task={task}
+                  onDelete={deleteTask}
+                  onUpdate={updateTask}
+                  index={index}
+                  moveTask={moveTask}
+                  pinnedTasks={pinnedTasks}
+                />
+              ))}
+            </>
+          )}
+          {pinnedTasks.length > 0 && unpinnedTasks.length > 0 && <hr className="top_line" />}
+          {unpinnedTasks.length > 0 && (
+            <>
+              {unpinnedTasks.map((task, index) => (
+                <Task
+                  key={task.id}
+                  task={task}
+                  onDelete={deleteTask}
+                  onUpdate={updateTask}
+                  index={index}
+                  moveTask={moveTask}
+                  pinnedTasks={pinnedTasks}
+                />
+              ))}
+            </>
+          )}
+        </>
       )}
       {tasks.length === 0 && <hr className="top_line" />}
     </div>
@@ -41,6 +66,7 @@ const TaskList: React.FC<TaskListProps> = ({ tasks, deleteTask, updateTask }) =>
 };
 
 export default TaskList;
+
 
 
 

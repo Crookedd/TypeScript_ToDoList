@@ -22,9 +22,10 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
       id: Date.now().toString(),
       title,
       description,
+      pinned: false, // Устанавливаем pinned в false по умолчанию
     };
 
-    addTask(newTask); 
+    addTask(newTask);
     setTitle("");
     setDescription("");
   };
@@ -63,6 +64,7 @@ const TaskForm: React.FC<TaskFormProps> = ({ addTask }) => {
 };
 
 export default TaskForm;
+
 
 
 

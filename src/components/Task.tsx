@@ -13,15 +13,15 @@ interface TaskProps {
   onUpdate: (updatedTask: TaskType) => void;
   index: number;
   moveTask: (sourceIndex: number, destinationIndex: number) => void;
+  pinnedTasks: TaskType[]; 
 }
 
-const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate, index, moveTask }) => {
+const Task: React.FC<TaskProps> = ({ task, onDelete, index, moveTask, pinnedTasks }) => {
   const dispatch = useDispatch();
   const [isHovered, setIsHovered] = useState(false);
   const [isEditModalOpen, setEditModalOpen] = useState(false);
   const [isShareModalOpen, setShareModalOpen] = useState(false);
 
-  // Перетаскивание задачи
   const [{ isDragging }, dragRef] = useDrag({
     type: "TASK",
     item: { id: task.id, index },
@@ -34,8 +34,16 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate, index, moveTask }
     accept: "TASK",
     hover: (item: { id: string; index: number }) => {
       if (item.index !== index) {
-        moveTask(item.index, index);
-        item.index = index;
+        const sourceTask = pinnedTasks.find((t) => t.id === item.id);
+        const targetTask = pinnedTasks.find((t) => t.id === task.id);
+
+        if (
+          (sourceTask?.pinned && targetTask?.pinned) ||
+          (!sourceTask?.pinned && !targetTask?.pinned)
+        ) {
+          moveTask(item.index, index);
+          item.index = index;
+        }
       }
     },
   });
@@ -57,10 +65,14 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate, index, moveTask }
     setEditModalOpen(false);
   };
 
+  const handlePinToggle = () => {
+    dispatch(updateTask({ ...task, pinned: !task.pinned })); 
+  };
+
   return (
     <div
       ref={(node) => dragRef(dropRef(node))}
-      className={`task ${isHovered ? "expanded" : ""} ${isDragging ? "dragging" : ""}`}
+      className={`task ${isHovered ? "expanded" : ""} ${task.pinned ? "pinned" : ""} ${isDragging ? "dragging" : ""}`}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
     >
@@ -70,6 +82,9 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate, index, moveTask }
       </div>
       <button className="delete_button" onClick={handleDelete}>
         &times;
+      </button>
+      <button className="pin_button" onClick={handlePinToggle}>
+        {task.pinned ? "Unpin" : "Pin"}
       </button>
       {isHovered && (
         <ButtonContainer
@@ -94,4 +109,6 @@ const Task: React.FC<TaskProps> = ({ task, onDelete, onUpdate, index, moveTask }
 };
 
 export default Task;
+
+
 
